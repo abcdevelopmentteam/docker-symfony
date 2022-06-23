@@ -1,0 +1,58 @@
+version: '3.9'
+services:
+  php:
+    build:
+      context: ./php
+      args:
+        TIMEZONE: '${TIMEZONE}'
+    container_name: syf-symfony
+    volumes:
+      - './code:/var/www/html'
+    ports:
+      - '8080:80'
+    networks:
+      - symfony
+    links:
+      - 'db:db'
+      - 'mailhog:mailhog'
+    depends_on:
+      - db
+      - mailhog
+    command: symfony serve --port=80
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2048M
+  db:
+    image: mariadb
+    env_file: .env
+    container_name: syf-mariadb
+    volumes:
+      - './mariadb:/var/lib/mysql'
+    ports:
+      - '3307:3306'
+    networks:
+      - symfony
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+  mailhog:
+    build: ./mailhog
+    container_name: syf-mailhog
+    ports:
+      - '8025:8025'
+    networks:
+      - symfony
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+volumes:
+  mariadb: null
+networks:
+  symfony:
+    name: symfony
