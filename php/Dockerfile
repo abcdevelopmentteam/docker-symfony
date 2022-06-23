@@ -1,8 +1,8 @@
 FROM php:7.4-fpm-buster
 ARG TIMEZONE
 
-RUN mkdir /code
-WORKDIR /code
+RUN mkdir /var/www/html/app
+WORKDIR /var/www/html/app
 
 RUN mkdir -p /usr/local/etc/php/extra/ \
     && curl "http://browscap.org/stream?q=Full_PHP_BrowsCapINI" -o /usr/local/etc/php/extra/full_php_browscap.ini \
