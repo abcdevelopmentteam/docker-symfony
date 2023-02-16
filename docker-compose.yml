@@ -7,7 +7,7 @@ services:
         TIMEZONE: '${TIMEZONE}'
     container_name: syf-symfony
     volumes:
-      - './code:/var/www/html'
+      - './code/app:/var/www/html/app'
     ports:
       - '8080:80'
     networks:
